@@ -1,0 +1,760 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Setup PyTorch NGC container </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="8b5f228a-ae88-4589-b91f-d466b1d91306" class="page sans"><header><h1 class="page-title">Setup PyTorch NGC container </h1></header><div class="page-body"><h1 id="38014e5d-9ed6-4f90-b612-2dee7b9280cb" class="">결론</h1><p id="d7f22a29-7c77-42a8-add0-9d9894476017" class=""><del>ngpu=1인 경우 ubuntu+docker일 때보다 거의 50배 느리다. 이 정도로 차이가 날 일인가? windows search 등을 끄긴 했는데...</del></p><p id="dc14c01b-85e3-4dca-a1d2-74e6f51e408b" class="">1. 거의 차이가 나지 않았다. 그냥 윈도우10+conda에서 해도 될 것 같다. 구글 colab (GPU: T4)보다 조금 빠른데 거의 비슷하다.</p><p id="f5eea6af-11c2-45b3-a581-fb1a35d621df" class="">2. 다음에 notion에 썼던 걸 가져오려면 뭔가 다른 방법을 찾아야겠다. 지금은 하다보니 거의 text만 복붙하고 나머지 format은 수동으로 다시 다 입력한 수준이다.</p><hr id="22186e84-b660-4a0b-b9a9-8b71bc898f77"/><ul id="5b5289a9-c294-424b-8752-b34246cf5133" class="bulleted-list"><li style="list-style-type:disc">PyTorch를 쓰려는 이유: 지금 굴려보려는 <a href="https://github.com/acids-ircam/RAVE">RAVE</a>의 requirements에 torch&gt;=1.12.1라고 돼있기 때문이다. (나는 PyTorch를 써 본 적이 없다.)</li></ul><ul id="f68bc9e5-6b43-4ff7-824b-fd8b0809b0d0" class="bulleted-list"><li style="list-style-type:disc">NGC container로 하는 이유 : geforce 1060밖에 없는데 오래된 물건이기도 하고 찾아봤더니 gpu 쓰게 설정하기가 어렵다거나 잘 안된다는 사례가 보였다. 겁이 나니까 먼저 이걸로 해보았다.</li></ul><h1 id="c31efc71-c8d5-4f78-a727-c9cb974ccac5" class="">시스템 환경/버전</h1><ul id="67af58fa-938a-44f4-9c6c-5bc49e1a76bc" class="bulleted-list"><li style="list-style-type:disc"><strong>하드웨어</strong> ryzen5 5700, nvidia geforce 1060, 16gb ram</li></ul><ul id="93df3bd3-ca25-436e-8d79-d3b9f593b7b2" class="bulleted-list"><li style="list-style-type:disc"><strong>Ubuntun</strong> 이걸 하다 보니 ubuntu20.04를 dual booting 되게 새로 깔았다..<ul id="dffd2c70-9147-4bf7-968d-c1e67495c802" class="bulleted-list"><li style="list-style-type:circle">python 3.8.10, gcc 9.4.0</li></ul><ul id="1d91a478-6e9c-45ce-8f90-edde43519b9a" class="bulleted-list"><li style="list-style-type:circle">nvidia NGC pytorch container : pytorch:23.01-py3</li></ul><ul id="794b1a31-6e02-484d-8c71-e3ffb39a306d" class="bulleted-list"><li style="list-style-type:circle">(container에서 nvidia-smi 실행) nvidia driver 525.85.12 CUDA Version 12.0</li></ul><ul id="a2882326-abf2-4320-966d-933442b46ca7" class="bulleted-list"><li style="list-style-type:circle">pytorch 1.14</li></ul></li></ul><ul id="95e775a5-7730-4c4f-aa34-4598027664e5" class="bulleted-list"><li style="list-style-type:disc"><strong>윈도우10</strong> 2023년 2월 13일에 윈도우10을 새로 깔아두었다. 버전 22H2, OS빌드 19045.2604 이라고 돼있다.</li></ul><h1 id="3f031248-0179-4cf0-a11b-9281df597325" class="">사전 준비</h1><p id="2bbf9d0f-34c7-44ac-aca3-67d110be6a59" class=""><a href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch">NGC의 PyTorch Container</a> 페이지의 prerequisite부터 따라간다. 순서대로 Docker Engine, NVIDIA GPU Drivers, NVIDIA Container Toolkit을 설치하라고 한다.</p><ul id="442fbbc2-e60c-4455-9b2d-252e5e73a9f0" class="bulleted-list"><li style="list-style-type:disc">Docker의 설치: <a href="https://docs.docker.com/engine/install/ubuntu/">Docker의 Document</a>를 따라가서 hello world 이미지를 실행시키는 것 까지 확인했다.</li></ul><ul id="7841f6c3-eefe-4d0e-9f72-4d8ef60f48a7" class="bulleted-list"><li style="list-style-type:disc">Nvidia Driver 설치 전 할 일: <a href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html">Nvidia Driver 링크</a>에 들어가면 다시 설치 전 할 일(pre-installation action)이 제시된다. 이를 위해 cuda-installation-guide→ <a href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions">pre-installation-actions</a>의 몇 항목을 따라해본다.<ul id="3882d041-a44e-411d-b379-ca900fac29a2" class="bulleted-list"><li style="list-style-type:circle">CUDA-Capable GPU 확인: 다음 실행 결과와 <a href="https://developer.nvidia.com/cuda-gpus">https://developer.nvidia.com/cuda-gpus</a> 의 목록을 비교해야 한다. 그런데 하고 보니까 이걸 해볼까 했을 때 이미 했던 것이다.<pre id="815db564-0efe-41f6-9967-5909df7bfd79" class="code"><code>#verify CUDA-Capable GPU
+lspci | grep -i nvidia </code></pre></li></ul><ul id="af328782-b7a4-40ed-8849-a53c9c771bea" class="bulleted-list"><li style="list-style-type:circle">linux 버전 확인, gcc 설치 확인: 우분투를 깔고 바로 했더니 gcc가 없어서 그것도 깔았다.<pre id="357e879e-c209-4442-8fc9-732bc5440e14" class="code"><code>#verify linux version
+uname -m &amp;&amp; cat /etc/*release
+#verify gcc version
+gcc --version
+#install gcc
+sudo apt-get install gcc</code></pre></li></ul><ul id="765e86a0-a2a3-4330-9f9f-a0b530dfe391" class="bulleted-list"><li style="list-style-type:circle">커널 헤더와 Development Package의 버전 확인 : 아무 것도 새로 설치하지는 않았다.<pre id="3e34ebec-2223-43d7-974f-6eba91053eb8" class="code"><code>#커널 버전 확인
+uname -r
+#현재 커널용 커널 header, development 패키지 설치
+sudo apt-get install linux-headers-$(uname -r)</code></pre></li></ul></li></ul><h2 id="d919c70f-fba6-40c5-82ac-96940f8054c6" class="">CUDA installation guide 따라가보기</h2><p id="66162f9c-92a2-4cc8-9a3e-55510e56d98a" class="">NVIDIA GPU drivers 를 설치해야 하지만, <a href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch">PyTorch Container</a> 페이지의 내용은 우분투 18.04까지라고 돼있고 하다 보니 막혀서 그냥 <a href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html">https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html</a> 를 따라했다. 시행착오를 좀 겪다가 뭔가 잘못될까 싶어서 대부분 TTY에서 했다. (우분투에서 ctrl+alt+f3~f6 을 입력하면 gui 없는 터미널이 나온다. (이 과정은 대부분 <a href="https://pstudio411.tistory.com/entry/Ubuntu-2004-Nvidia%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0">이 포스트</a>를 참고해서 했다.)</p><pre id="a4362ee5-328c-4afe-8622-ea0f6ce03cc7" class="code"><code>sudo apt-get remove --purge nvidia-*
+sudo apt-get autoremove
+sudo apt-get update
+
+ubuntu-drivers devices #이것으로 설치할 드라이버 버전을 확인했다. 하지만 그냥 최신 버전으로 했다.
+sudo apt install nvidia-driver-525 #이걸 여기서 진짜 했는지 확실히 모르겠다...
+sudo reboot</code></pre><p id="fc3e9e29-99f0-4d48-9234-0ea6ba9ffa16" class="">그 뒤에 <a href="https://developer.nvidia.com/cuda-downloads">https://developer.nvidia.com/cuda-downloads</a>에서 Linux, x86_64, Ubuntu20.04, deb(local)을 선택해서 cuda 툴킷을 다운받고 그 아래에 출력되는 커맨드를 따라했다.</p><pre id="46df6704-fdc8-4df0-8872-cc0aed0889ca" class="code code-wrap"><code>wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/12.0.1/local_installers/cuda-repo-ubuntu2004-12-0-local_12.0.1-525.85.12-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2004-12-0-local_12.0.1-525.85.12-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2004-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda</code></pre><p id="bbe4eb12-736e-4624-8a8d-83a4a5659bf5" class="">dpkg를 하는 단계에서 GPG 키가 인스톨 되지 않은 것 같다고 하면서 command를 하라고 하는데 위에도 바로 다음에 같은 것이 쓰여있어서 할 필요가 없었다.</p><h2 id="74c78b01-3742-499b-801c-ae01602b516b" class="">NVIDIA container toolkit 설치 </h2><p id="ad850d21-ddb9-4579-b3d1-c9663204f947" class="">다시 <a href="https://github.com/NVIDIA/nvidia-docker">nvidia container toolkit</a>에서 <a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker">installation guide</a>에 들어가, 다음을 실행했다.</p><pre id="0b3fe847-02f4-42a5-aa2d-43e549a1e0de" class="code"><code>curl https://get.docker.com | sh \ 
+sudo systemctl --now enable docker
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)       &amp;&amp; curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg       &amp;&amp; curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list |             sed &#x27;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&#x27; |             sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit #이것도 겁나서 로그오프하고 tty에서 했다.
+sudo systemctl restart docker
+sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi</code></pre><p id="29db7aab-660f-4578-8a48-f144dfe430b8" class="">마지막 커맨드를 통해 docker에서 기본 컨테이너를 돌렸다고 하면서 nvidia-smi를 실행한 결과를 보여준다. 그런데 그냥 ubuntu에서 nvidia-smi를 실행한 것과 현재 실행 중인 processor가 다를 뿐이라 docker에서 실행한 것이 맞는지 직관적으로 알기는 어려웠다. 그리고 위에서 한 거랑 cuda 버전이 낮은데 문제가 없나?</p><pre id="0dd6bcc6-d084-4232-9100-019180ee97c7" class="code"><code>#docker의 실행
+docker run --gpus all -it --rm nvcr.io/nvidia/pytorch:23.01-py3
+python</code></pre><p id="c3a4debc-e22d-491b-9c2b-1fd0f4701d7a" class="">이렇게 docker 내부에서 python을 실행시키는데 성공한다…</p><pre id="17322be9-0ab1-4ee2-821d-c581f2449038" class="code"><code>&gt;&gt;&gt; import torch
+&gt;&gt;&gt; print(torch.cuda.is_available()) # it shuld print &#x27;True&#x27;</code></pre><p id="aa13e45e-9c5f-4e78-ad57-263bedf4b244" class="">container 페이지에서 23.01-py3 라고 돼있기 때문에 그렇게 입력했다.</p><h1 id="ff2ddfc1-3afe-4f53-8ea3-4330f40b1b90" class="">간단한 성능 확인</h1><p id="b8136cc6-9422-4944-bdbb-1456a901dc7a" class="">이를 위해 PyTorch에서 model 학습을 시켜보자. (벤치마크 아님. 그냥 평소 사용환경에서 걸린 시간)</p><h3 id="78c977c8-9588-47a6-9cb8-55b2306b489c" class="">PyTorch - DCGAN Tutorial</h3><p id="b53c4f95-1ea2-489d-b044-f48ea23760d7" class="">PyTorch의 <a href="https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html">DCGAN Tutorial</a>을 대충 걸리는 시간 확인하는데 사용했다. training loop에 두 줄만 추가했다. 50 iteration에 걸리는 시간을 time.time()으로 대충 출력시켰는데, 그다지 정확하지는 않을 것이다. 다만 실제 사용 환경에서 어떨지 확인하기 위해서는 괜찮지 않나 했다.</p><pre id="6eec3521-0e00-4869-979b-967e6bcde39a" class="code"><code>import time
+
+#add t0_rough in train loop
+t0_rough = time.time()  #added line 1
+for epoch in range(num_epochs):
+	for i, data in enumerate(dataloader, 0):
+	...
+	if i % 50 == 0:
+		...
+		print(&quot;rough time passed &quot;, time.time()-t0_rough)
+    t0_rough=time.time() #added line 2</code></pre><table id="2a5f3029-e14c-41dd-af2b-b3c1893bc897" class="simple-table"><tbody><tr id="e10286e3-a94d-4072-ad74-866ab0fd2fa4"><td id="ETMO" class="">ENV</td><td id="LaVi" class="">ngpu</td><td id="`d}f" class="">time(s)/50 loop</td></tr><tr id="26ad0e5e-748e-4b03-b23e-51440484c284"><td id="ETMO" class="">NGC container(Ubuntu)</td><td id="LaVi" class="">1</td><td id="`d}f" class="">~8.5</td></tr><tr id="51a0a073-efdb-4a80-819e-abdfe69029ec"><td id="ETMO" class=""></td><td id="LaVi" class="">0</td><td id="`d}f" class="">~88</td></tr><tr id="de3c32bf-91d9-4de7-b28b-d1977c68143c"><td id="ETMO" class="">Conda, Windows10</td><td id="LaVi" class="">1</td><td id="`d}f" class="">~8.5</td></tr><tr id="dedc627f-cd89-4184-9969-ad8a6d5048fa"><td id="ETMO" class=""></td><td id="LaVi" class="">0</td><td id="`d}f" class="">~110</td></tr><tr id="ef354bde-c994-4ad8-be2a-2aaf4ca6e803"><td id="ETMO" class="">Google Colab (구독x)</td><td id="LaVi" class="">T4</td><td id="`d}f" class="">~11</td></tr></tbody></table><h2 id="2408edcb-c887-419a-b655-83d2d6a4a395" class=""><details open=""><summary>환경별로 걸린 시간 확인</summary></details></h2><div class="indented"><h3 id="c4f4feaa-4e8e-45e8-be3a-58cf82f94d07" class="">rough comparison with dcgan_faces_tutorial.py</h3><p id="60df4f1c-c764-46d0-a90b-fd76d6fbfa97" class="">50iter에 걸리는 시간을 time.time()으로 대충 출력시켰는데, 그다지 정확하지는 않을 것이다. ngpu를 0으로 놓으면 gpu를 쓰지 않고, 1로 놓으면 쓰게 돼있다.</p><ul id="0abd9786-e013-4357-b0b9-f6c797d566c4" class="bulleted-list"><li style="list-style-type:disc">ngpu=1<pre id="9a69c637-31e0-4f74-bf48-787e0c1fd0fd" class="code code-wrap"><code>Starting Training Loop...
+[0/5][0/1583]   Loss_D: 2.1308  Loss_G: 4.9217  D(x): 0.5400    D(G(z)): 0.6765 / 0.0137
+rough time passed:  1.4908130168914795
+[0/5][50/1583]  Loss_D: 0.1529  Loss_G: 7.9024  D(x): 0.9921    D(G(z)): 0.1051 / 0.0023
+rough time passed:  8.799523115158081
+[0/5][100/1583] Loss_D: 0.2423  Loss_G: 6.0729  D(x): 0.9216    D(G(z)): 0.1033 / 0.0051
+rough time passed:  8.58675241470337</code></pre></li></ul><ul id="6419ea5f-ffe4-462c-a2c9-4806c2a20275" class="bulleted-list"><li style="list-style-type:disc">ngpu=0<pre id="5b7bc2f6-b44f-4da2-b10d-d84cd99b9fd4" class="code code-wrap"><code>Starting Training Loop...
+[0/1][0/1583]	Loss_D: 1.8629	Loss_G: 5.1479	D(x): 0.5408	D(G(z)): 0.6077 / 0.0115
+rough time passed  1.994410514831543
+[0/1][50/1583]	Loss_D: 0.1189	Loss_G: 29.0720	D(x): 0.9285	D(G(z)): 0.0000 / 0.0000
+rough time passed  87.76640963554382
+[0/1][100/1583]	Loss_D: 0.8175	Loss_G: 10.7362	D(x): 0.8466	D(G(z)): 0.3007 / 0.0002
+rough time passed  88.19073176383972
+[0/1][150/1583]	Loss_D: 0.4660	Loss_G: 5.5353	D(x): 0.8783	D(G(z)): 0.2275 / 0.0084
+rough time passed  88.02228569984436</code></pre><h2 id="ae12b0cd-bc8f-4ad8-a694-3d6b9c681264" class="">다른 경우와 비교</h2><p id="95e8488f-8303-4941-8cf9-bdc6708e82a2" class="">일단 container가 PyTorch에 대해 최적화돼있다고는 하는데, 차이가 얼마나 날까? 하지만 패키지 버전 관리가 번거로우니 conda나 docker같은 것을 쓰긴 해야 할 거 같다. </p><p id="5cb43a4b-212c-459a-b6f5-1692bb6df1f9" class="">참고자료 : <a href="https://www.quora.com/What-is-the-difference-between-conda-and-Docker">conda vs docker (quora)</a></p><h3 id="ae61d64d-99c7-4935-85d1-ac20fdc4b01b" class="">윈도우10 + conda와의 비교</h3><p id="0fe2594b-1e32-486f-bc72-83be8bfa405a" class="">윈도우에서 cuda toolkit 깔고 PyTorch까는 것과 비교해보았다.  <a href="https://pytorch.org/get-started/locally/#windows-anaconda">Start Locally | PyTorch</a> 을 따라했다.</p><pre id="36ed92c9-c0de-4cd0-b4c6-043561051e4a" class="code"><code>conda create -n torch python=3.9 anaconda
+conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia</code></pre><p id="43bf6dee-6e56-4b80-a322-aaee4186e9f1" class="">PyTorch의 경우 <a href="https://pytorch.org/get-started/locally/#windows-anaconda">Start Locally | PyTorch</a> 를 따라간다. 근데 위에서 cuda 12.0-을 설치했는데 이게 맞나? 아니 이렇게 새로 설치한다면 왜 위에서 cuda를 설치한 거지? 근데 여기서 말하는 cuda가 무엇인가?</p><ul id="0bbe9cc6-220a-418d-a5d2-c4bcc0cb9074" class="bulleted-list"><li style="list-style-type:circle">conda, ngpu=1<pre id="6d59e388-b07c-464a-98f6-2c9d4a89a18b" class="code code-wrap"><code>Starting Training Loop...
+[0/5][0/1583]	Loss_D: 2.0950	Loss_G: 5.1553	D(x): 0.5597	D(G(z)): 0.6765 / 0.0109
+rough time passed  3.4104292392730713
+[0/5][50/1583]	Loss_D: 0.2315	Loss_G: 14.4507	D(x): 0.8930	D(G(z)): 0.0010 / 0.0000
+rough time passed  8.42665982246399
+[0/5][100/1583]	Loss_D: 0.0682	Loss_G: 3.9831	D(x): 0.9848	D(G(z)): 0.0402 / 0.0268
+rough time passed  8.408739566802979</code></pre></li></ul><ul id="d6c096f4-89f7-49d0-b84a-c6678f78e60a" class="bulleted-list"><li style="list-style-type:circle">conda, ngpu=0<pre id="692b866e-ffb0-4706-a097-69e2cdba1d2b" class="code code-wrap"><code>Starting Training Loop...
+[0/5][0/1583]	Loss_D: 1.7237	Loss_G: 5.2574	D(x): 0.5539	D(G(z)): 0.5840 / 0.0080
+rough time passed  4.6841065883636475
+[0/5][50/1583]	Loss_D: 0.1804	Loss_G: 13.5473	D(x): 0.9280	D(G(z)): 0.0004 / 0.0000
+rough time passed  113.59286379814148
+[0/5][100/1583]	Loss_D: 0.4363	Loss_G: 6.6628	D(x): 0.8443	D(G(z)): 0.0873 / 0.0022
+rough time passed  114.00232672691345</code></pre></li></ul><p id="d1a4cc25-c643-43c7-8c90-8520c2183445" class="">이 정도로 차이가 날 일인가? SSD때문인가 싶어서 windows search 등을 꺼보기도 했는데 ngpu=1인 경우 약 40% 빨라지긴 했다...</p><h3 id="03c00752-000e-4c8c-91b8-a408278a3e4f" class="">Google Colab + T4</h3><p id="d06e5184-baca-475d-a403-e62d1b75fe22" class="">~10.5초</p><pre id="ca6544af-716f-4044-ac33-dd7488ebef45" class="code"><code>Starting Training Loop...
+[0/5][0/1583]	Loss_D: 1.6280	Loss_G: 5.5230	D(x): 0.5728	D(G(z)): 0.5501 / 0.0065
+rough time passed :  8.682744026184082
+[0/5][50/1583]	Loss_D: 0.8478	Loss_G: 19.7958	D(x): 0.9399	D(G(z)): 0.4444 / 0.0000
+rough time passed for 50 loop:  10.443797588348389
+[0/5][100/1583]	Loss_D: 0.3011	Loss_G: 7.2790	D(x): 0.8684	D(G(z)): 0.0197 / 0.0020
+rough time passed for 50 loop:  11.03904676437378
+[0/5][150/1583]	Loss_D: 0.3543	Loss_G: 3.8570	D(x): 0.8419	D(G(z)): 0.1189 / 0.0396
+rough time passed for 50 loop:  9.887394428253174
+[0/5][200/1583]	Loss_D: 2.6835	Loss_G: 5.6236	D(x): 0.1737	D(G(z)): 0.0026 / 0.0149
+rough time passed for 50 loop:  10.630318880081177</code></pre><p id="ea2e6fe0-7dba-4e37-82ad-9e756bc5c459" class="">
+</p><h3 id="3241bd77-6e90-49be-aff8-08cc3e6417d3" class="">windows10, vs code에서 conda 환경 사용하기</h3><p id="886a20d8-6ef2-48b5-8dec-2fd90d8cd4aa" class=""><a href="https://itsjh.tistory.com/40">[Python] vsCode에서 conda 가상환경 실행하기 (tistory.com)</a> 참고.</p><ol type="1" id="5880564d-2d3e-4219-963f-78ef8e87dafc" class="numbered-list" start="1"><li>ctrl+shift+p, python: select interpreter 에서 적당한 환경 고르기</li></ol><ol type="1" id="4ec9065e-ac1a-4ea2-b913-e6d30b63438e" class="numbered-list" start="2"><li>실행할 python script 우클릭, ‘run python file in terminal’ (아직 안해봄)</li></ol><p id="9687ce10-ad2a-4eb4-8499-cc4411b45659" class="">
+</p></li></ul></div><h1 id="050c4ca5-2c20-441c-b226-f39b9f05c62d" class=""><details open=""><summary>기타 알아본 것</summary></details></h1><div class="indented"><h2 id="47337cf8-161c-4d3b-ba3e-9ba737ac7b9d" class="">docker에서 주피터 노트북 실행시켜서 열기</h2><p id="3b384a9b-7900-4eb9-95f0-493c9c9065cb" class="">docker를 실행시킨 후, jupyter notebook을 실행시킨다. 이후 localhost에서 다음을 실행하면 아래쪽에 IPAddress가 쓰여있다.</p><pre id="84e3f925-9d49-4e8e-80dc-7c1511470162" class="code"><code>docker container ls #container-id 확인
+docker inspect container-id #container-id를 바꿔서 실행</code></pre><p id="e9079e50-083b-4cea-ba78-c7fb5036d736" class="">(참고 <a href="https://bluese05.tistory.com/36">https://bluese05.tistory.com/36</a>)</p><p id="5885d117-1768-4315-991b-67f2b66d0daa" class="">jupyter-notebook이 출력시킨 웹 주소 http://hostname:8888/…. 에서 hostname을 위에서 찾은 ip주소로 바꾸면 된다.</p><h2 id="374fd173-56ef-4f84-bd94-7a111051c539" class="">conda&amp;container 에서 vs code로 python script 다루기</h2><h3 id="e5672482-0710-42d2-8ee4-da54026fef2b" class="">Conda&amp;VS Code</h3><p id="fb238b68-fede-4a30-b838-16884b5d1df2" class="">참고자료  <a href="https://itsjh.tistory.com/40">[Python] vsCode에서 conda 가상환경 실행하기 (tistory.com)</a></p><ol type="1" id="486f6f90-d6b9-4958-a32f-498de328909e" class="numbered-list" start="1"><li>conda&amp;vs code: vs code에서 [Ctrl]+[Shift]+[p]를 누르고 “python:Select Interpreter”선택, 가상환경 선택</li></ol><ol type="1" id="e8501f24-4804-4421-b0ae-e0e7ff6600b5" class="numbered-list" start="2"><li>VS Code의 explorer에서 스크립트 파일 우클릭, “Run Python File in Terminal”</li></ol><h3 id="a892dd10-3504-43b3-8df5-d2284a2310e1" class="">Docker&amp;VS Code</h3><p id="4ba9b6cf-fef2-49c9-8811-fe82e0ee0039" class="">참고자료(code.visualstudio.com) </p><p id="299fb3a2-a968-48e0-89b4-90cd619c7e2e" class=""><a href="https://code.visualstudio.com/docs/devcontainers/containers">Devloping inside a Container</a> , <a href="https://code.visualstudio.com/docs/devcontainers/attach-container">Attatch to a running conatiner</a></p><ol type="1" id="61e8e05b-652b-4252-8020-9dd503dd3407" class="numbered-list" start="1"><li>Docker, VS Code, Dev Cointainers Extension(VS Code)을 설치한다.</li></ol><ol type="1" id="8f85005b-6a3b-42df-8e80-61a7206c3659" class="numbered-list" start="2"><li>왼쪽 Activity Bar에 Remote Explorer가 생긴다. 여기서 원하는 container에서  Attach to Container inline action을 선택한다.</li></ol><p id="eb5a9f25-80c0-48c4-854a-4656a1242072" class="">
+</p><p id="6586527e-967b-4d88-83a2-8b5bd5c49d14" class="">
+</p><h1 id="53e2e4cf-b7b9-48ad-99ba-da7926c58630" class="">Run Terminal of Running Container</h1><pre id="682c1bbf-0a2c-4ee3-8aff-7f0c8988d3a3" class="code"><code>docker exec -it &lt;container-id&gt; /bin/sh</code></pre><h1 id="d2dd4d36-8227-4984-b5a6-8c1d9aa318c2" class="">Mount local dir in Docker</h1><pre id="c30b9934-185d-4f01-a98e-ec7b2049ffef" class="code"><code>docker run --gpus all -it --rm --mount type=bind,source=/home/chhyyi/Downloads,target=/app \
+ nvcr.io/nvidia/pytorch:23.01-py3</code></pre><p id="0da65125-ff98-422c-86f6-d1786c90c8c7" class="">이건 작동한다.</p></div><h1 id="f6f512cd-cc5e-455c-a36a-5c5077e92403" class=""><details open=""><summary>시행착오</summary></details></h1><div class="indented"><h2 id="da1ffe25-9bac-4e2f-93f6-ab011ef6960c" class="">1차 시도 - 윈도우10으로는 안되나?</h2><p id="862d0ec5-4fc3-474c-a962-896448150d18" class="">NGC 컨테이너 준비물을 윈도우에서 깔려고 했으나 이게 사실 linux에서 까는 거였다. 뭐한 거지?</p><p id="82c057f6-e607-417f-8a2a-0da8d91f3c47" class="">
+</p><p id="bb8d010d-fa7d-41ed-b6b7-a92527cdd040" class="">NGC는 Nvidia GPU Cloud의 약자라고 한다. NGC Catalog에서 <a href="https://catalog.ngc.nvidia.com/containers">containers</a>에 들어가면<a href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch"> pyTorch container</a>가 있다. 이 이미지를 사용하지 위해 세 개의 준비물이 필요하다고 한다.</p><ul id="f8de85fd-7fc4-46db-9f57-899481d81c38" class="bulleted-list"><li style="list-style-type:disc"><a href="https://docs.docker.com/get-docker/">Docker Engine</a> : 4.16.3을 설치하였다. HYPER-V 대신 WSL2를 사용하는 것이 권장 옵션이라고 해서 그대로 했다. 시키는 대로 재시작을 하자 wsl을 업데이트 하라고 하여 Windows PowerShell에서 시키는 대로 다음을 실행했다.<pre id="3de7e053-c713-4087-84ad-526680dac6c9" class="code"><code>wsl --update</code></pre><p id="cbe9051e-4b4e-4421-af13-2c65e5c4243a" class="">그러자 이번에는 가상화가 켜져 있지 않다고 했다. 얼마 전에 ryzen5 5700으로 바꾸면서 산 asus 메인보드인데 재시작 하면서 저장하니까 정상적으로 docker가 실행되었다.</p><figure id="f9c66999-f222-48af-b6c6-1f887ea41219" class="image"><a href="Setup%20PyTorch%20NGC%20container%208b5f228aae884589b91fd466b1d91306/230215234649.bmp"><img style="width:1024px" src="Setup%20PyTorch%20NGC%20container%208b5f228aae884589b91fd466b1d91306/230215234649.bmp"/></a><figcaption>스크린샷 까지 저장이 되길래 찍어보았다. 저장하려면 usb 드라이브를 꽂아 놔야 한다.</figcaption></figure><p id="d22dd951-116c-4e09-a128-b6da69f9f10e" class="">Docker의 튜토리얼은 슬쩍 보고 넘어갔다. clone, build, run, share의 네 단계가 설명돼 있었다.</p></li></ul><ul id="2ba47334-f9b6-4871-a9e4-27092cb73169" class="bulleted-list"><li style="list-style-type:disc"><a href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html">Nvidia Driver</a> 의 경우, wsl에 깔아야 하는 것 같다. 다시 네 개의 준비물이 제시된다.</li></ul><ul id="fd22f0f5-18ea-40d8-84ed-9dfee143b426" class="bulleted-list"><li style="list-style-type:disc"><a href="https://github.com/NVIDIA/nvidia-docker">nvidia docker toolkit</a> (github) :여기에서 완전히 막혔다.</li></ul><h2 id="a2036dca-8036-4aea-94c5-37a3265f10e6" class="">2차 시도 : WSL에서는 안되나?</h2><p id="252c2289-d98c-431e-9d91-c889b3b8dccb" class="">다시 WSL2를 써보기로 했다. 둘을 비교하는 <a href="https://learn.microsoft.com/ko-kr/windows/wsl/compare-versions">마이크로소프트 learning 페이지</a>를 보면 이렇게 돼있다.</p><blockquote id="2a8597d4-e112-4497-bf6d-7f3c35923c79" class="">Windows 11 또는 Windows 10, 버전 1903, 빌드 18362 이상에서만 사용할 수 있습니다.</blockquote><p id="841efd6a-508f-4721-bac3-7153305b41c4" class="">다음으로는 역시 MS Learning의 <a href="https://learn.microsoft.com/ko-kr/windows/wsl/basic-commands#set-wsl-version-to-1-or-2">WSL의 기본 명령 페이지</a>를 참고하여 ubuntu20.04를 설치하고, 이것을 WSL2로 실행하게 설정하였다.</p><pre id="0c8bf5f0-0e51-4965-985c-067cda2487d3" class="code"><code>wsl --set-default-version 2
+wsl --install Ubuntu-20.04</code></pre><p id="c57f86d0-924e-4bd4-b54f-41329a6d82e7" class="">그런데 install이 너무 오래 걸렸다. 혹시나 해서 CTRL+C로 취소하고 powershell을 관리자 권한으로 실행하고 다시 했지만 여전히 0%에 멈춰 있었다. 윈도우즈에 설치된 Docker를 제거하고, Windows 기능 켜기/끄기에서 wsl을 꺼서 재시작했다가 다시 켜서 재시작을 두 번 한 후에 설치하니까 설치가 잘 되었다.</p><p id="c7b77f54-0051-4778-bb13-259dec26b0ab" class=""> 그러나 이번에는 docker를 설치할 수 없었다. <a href="https://docs.docker.com/desktop/install/linux-install/">docker의 document</a>에서 virtualization 이 되는지 보려면 svm을 확인하라는데 안된다. <a href="https://unix.stackexchange.com/questions/594470/wsl-2-does-not-have-lib-modules">linux kernel - WSL 2 does not have /lib/modules/ - Unix &amp; Linux Stack Exchange</a> 에 뭔가 단서가 있을 거 같은데 확인 불가능.</p><p id="355bedc2-a0fc-4c80-9b81-8adc3796cfa5" class="">
+</p><h2 id="bce9ce4a-498b-4266-8c36-0b4f4abea524" class="">3차시도 도중</h2><ul id="00d1dbe8-1d2d-438f-815c-95025095b936" class="bulleted-list"><li style="list-style-type:disc">드라이버는 그냥 <a href="https://www.nvidia.com/Download/index.aspx?lang=en-us">nvidia 웹페이지</a>에서 linux 64-bit, production branch에서 .run 파일을 다운받았는데 sudo sh 로 실행이 안된다. 그래서 그냥 3. Package Manager 의 ubuntu LTS 것들을 복사 붙여넣기로 실행했다. 하지만 설치하니까 dependency error가 일어나서 시키는 대로 하니까 됐다.<pre id="ab0cd99d-8ea2-443d-9924-3abba4b66c1f" class="code"><code>sudo apt-get -y install cuda-drivers
+# 의존성 문제 해결?
+sudo apt --fix-broken install</code></pre></li></ul><ul id="caef5f8b-b50a-4ad3-96fa-af49cda880db" class="bulleted-list"><li style="list-style-type:disc">그 다음 <a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker">https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker</a> 여기서 docker  - getting started를 무지성으로 따라갔는데 docker 실행이 되지 않고 이런 내용을 출력했다.<pre id="a0eeb146-ca91-4947-90f8-7b8c632e61af" class="code"><code>docker: Error response from daemon: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as &#x27;legacy&#x27;
+nvidia-container-cli: initialization error: nvml error: driver/library version mismatch: unknown.</code></pre><p id="7c254ad1-c4a5-4a77-aecb-06bed00ef819" class="">또 그래픽카드 드라이버가 문제가 생긴 듯 우분투 gui가 엄청나게 느려지고, 두 모니터가 같은 화면으로 출력되기 시작했다. 의심스러운 부분은 다음과 같다.</p><ul id="1aefadfe-46b4-481c-aaa6-f41c36246baa" class="bulleted-list"><li style="list-style-type:circle">docker가 이미 설치돼 있는데 다시 설치하는거 맞냐고 메시지가 떴다는 점(아닌 거 같으면 ctrl+c 눌러서 취소하라고 돼있었는데 잠깐 머뭇거리니까 그냥 지나감)</li></ul><ul id="90b07afe-4a68-4499-8a9d-d2e316138874" class="bulleted-list"><li style="list-style-type:circle">드라이버 설치 이후 post-process를 따라가지 않았다. </li></ul><p id="a6e324fe-2865-4979-87c9-ccaaa5f42568" class="">전부 purge하고 드라이버부터 다시 깔아보자. <a href="https://pstudio411.tistory.com/entry/Ubuntu-2004-Nvidia%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0">https://pstudio411.tistory.com/entry/Ubuntu-2004-Nvidia드라이버-설치하기</a> 일단 이걸 따라가본다. nvidia 드라이버를 460버전으로 낮추고 다시 해보자. 460.106.00 version으로…? 아님 다른 버전?? 조금 생각해보자. →그냥 최신 버전으로 했다.</p></li></ul><figure id="894c316c-f756-441c-975e-0bfb81cbf51f" class="link-to-page"><a href="https://www.notion.so/894c316cf756441c975e0bfb81cbf51f">시행착오</a></figure><p id="7144fc29-c0e1-48cc-89ca-d420f722d820" class="">
+</p></div><p id="2672669f-d10e-4a6e-84e7-07042ae2da19" class="">
+</p></div></article></body></html>
