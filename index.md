@@ -7,3 +7,6 @@ I made my [blog](chhyyi.tistory.com) on tistory. tistory is popular blog hosting
 - ?
 ## Post written in Korean
 - [Setup NGC PyTorch Container](https://chhyyi.github.io/notion_exported/Setup%20PyTorch%20NGC%20container%208b5f228aae884589b91fd466b1d91306.html)
+
+## test ravejs
+[ravejs with custom models](ravejs_index.html)
